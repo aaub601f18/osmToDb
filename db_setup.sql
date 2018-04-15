@@ -1,0 +1,44 @@
+DROP DATABASE IF EXISTS gps;
+CREATE DATABASE gps;
+USE gps;
+
+CREATE TABLE node
+(
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+	lat FLOAT (10,6) NOT NULL, 
+	lng FLOAT (10,6) NOT NULL
+);
+
+
+CREATE TABLE edge
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	n1id BIGINT UNSIGNED,
+	n2id BIGINT UNSIGNED,
+	oneway CHAR (1), 
+	speed VARCHAR (50),
+	distance INT, 
+	name VARCHAR (255),
+	type VARCHAR (100),
+
+	CONSTRAINT edge_node_fk1 
+		FOREIGN KEY (n1id) REFERENCES node (id) ON DELETE CASCADE ON UPDATE CASCADE, 
+	CONSTRAINT edge_node_fk2 
+		FOREIGN KEY (n2id) REFERENCES node (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE timerecords
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date DATETIME, 
+	timeTravelSeconds INT,
+	edgeId INT, 
+	
+	CONSTRAINT timeRecords_edge_fk
+		FOREIGN KEY (edgeId) REFERENCES edge (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE INDEX node_gps_cords ON node (lat, lng);
+CREATE INDEX edge_node_rel ON edge (n1id, n2id);
+

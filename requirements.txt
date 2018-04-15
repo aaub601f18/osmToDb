@@ -1,0 +1,6 @@
+lxml==4.2.1
+mysql-connector==2.1.6
+osmread==0.2
+pkg-resources==0.0.0
+protobuf==3.0.0b3
+six==1.11.0
